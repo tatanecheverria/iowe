@@ -248,140 +248,48 @@ body{font-family:'Sora',-apple-system,system-ui,sans-serif;color:#4A403A}
 
 <div class="pg" id="p-home">
   <div class="tb">
-    <div class="logo">iO</div>
-    <div style="text-align:center"><div style="font-size:9px;color:#A09070">Bienvenido,</div><div style="font-size:12px;font-weight:600">Tomás 👋</div></div>
-    <div class="av" onclick="go('perfil')">TM</div>
+    <div class="logo" onclick="nav(0)" style="cursor:pointer">iO</div>
+    <div style="text-align:center"><div style="font-size:9px;color:#A09070">Bienvenido,</div><div style="font-size:12px;font-weight:600" id="home-username">Tomás 👋</div></div>
+    <div class="av" onclick="go('perfil')" id="home-avatar">TM</div>
   </div>
   <div class="scroll" style="padding:0 16px">
     <div class="card" style="padding:18px;text-align:center;margin-bottom:8px">
       <div style="font-size:9px;color:#A09070;text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px">Balance neto</div>
-      <div style="font-size:42px;font-weight:900;color:#4A7A30;letter-spacing:-2px;line-height:1">$24.500</div>
-      <div style="font-size:9px;color:#A09070;margin-top:5px">actualizado hace 2 min</div>
+      <div id="home-balance" style="font-size:42px;font-weight:900;color:#4A7A30;letter-spacing:-2px;line-height:1">$0</div>
+      <div style="font-size:9px;color:#C0B090;margin-top:5px">calculado desde tus grupos</div>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:4px">
       <div style="padding:14px;background:#E8F0E0;border-radius:13px;text-align:center">
         <div style="font-size:8px;color:#4A7A30;margin-bottom:5px">↑ Te deben</div>
-        <div style="font-size:21px;font-weight:800;color:#4A7A30;letter-spacing:-1px;line-height:1">$67.000</div>
-        <div style="font-size:8px;color:#4A7A30;margin-top:3px">3 personas</div>
+        <div id="home-te-deben" style="font-size:21px;font-weight:800;color:#4A7A30;letter-spacing:-1px;line-height:1">$0</div>
       </div>
       <div style="padding:14px;background:#F5E8E0;border-radius:13px;text-align:center">
         <div style="font-size:8px;color:#C1666B;margin-bottom:5px">↓ Debes</div>
-        <div style="font-size:21px;font-weight:800;color:#C1666B;letter-spacing:-1px;line-height:1">$42.500</div>
-        <div style="font-size:8px;color:#C1666B;margin-top:3px">2 personas</div>
+        <div id="home-debes" style="font-size:21px;font-weight:800;color:#C1666B;letter-spacing:-1px;line-height:1">$0</div>
       </div>
     </div>
     <div class="sec">Grupos activos</div>
-    <div style="display:flex;flex-direction:column;gap:5px">
-      <div class="row" onclick="go('grupo')"><div style="font-size:16px">🏠</div><div style="flex:1"><div style="font-size:13px;font-weight:600">Depto Feb</div><div style="font-size:10px;color:#A09070">4 personas · 3 gastos</div></div><div class="neg">-$18.200</div></div>
-      <div class="row" onclick="go('grupo')"><div style="font-size:16px">🏔️</div><div style="flex:1"><div style="font-size:13px;font-weight:600">Mendoza</div><div style="font-size:10px;color:#A09070">6 personas · 8 gastos</div></div><div class="pos">+$45.000</div></div>
-    </div>
-    <div id="extra-grupos" style="display:none;flex-direction:column;gap:5px;margin-top:5px">
-      <div class="row" onclick="go('grupo')"><div style="font-size:16px">🥩</div><div style="flex:1"><div style="font-size:13px;font-weight:600">Asado viernes</div><div style="font-size:10px;color:#A09070">5 personas</div></div><div class="pos">+$22.000</div></div>
-      <div class="row" onclick="go('grupo')"><div style="font-size:16px">🎬</div><div style="flex:1"><div style="font-size:13px;font-weight:600">Cine grupo</div><div style="font-size:10px;color:#A09070">3 personas</div></div><div class="neg">-$8.500</div></div>
-    </div>
-    <button id="btn-grupos" onclick="toggleExtra('grupos')" style="display:block;width:100%;text-align:center;padding:9px 0 4px;font-size:11px;color:#F4A900;background:none;border:none;cursor:pointer;font-family:inherit">Ver más ↓</button>
+    <div id="home-grupos-list"></div>
     <div class="sec">Actividad reciente</div>
-    <div style="display:flex;flex-direction:column;gap:5px">
-      <div class="row"><div style="width:30px;height:30px;border-radius:8px;background:#E8F0E0;display:flex;align-items:center;justify-content:center;font-size:14px">💸</div><div style="flex:1"><div style="font-size:12px;color:#ccc">Jorge te pagó</div><div style="font-size:10px;color:#A09070">Viaje Mendoza</div></div><div class="pos">+$45k</div></div>
-      <div class="row"><div style="width:30px;height:30px;border-radius:8px;background:#2D1500;display:flex;align-items:center;justify-content:center;font-size:14px">➕</div><div style="flex:1"><div style="font-size:12px;color:#ccc">Agregaste cena</div><div style="font-size:10px;color:#A09070">Depto Feb</div></div><div class="yel">$32k</div></div>
-      <div class="row"><div style="width:30px;height:30px;border-radius:8px;background:#F5E8E0;display:flex;align-items:center;justify-content:center;font-size:13px;color:#C1666B;font-weight:700">↑</div><div style="flex:1"><div style="font-size:12px;color:#ccc">Pagaste a Camila</div><div style="font-size:10px;color:#A09070">Depto Feb</div></div><div class="neg">-$18k</div></div>
-    </div>
-    <div id="extra-act" style="display:none;flex-direction:column;gap:5px;margin-top:5px">
-      <div class="row"><div style="width:30px;height:30px;border-radius:8px;background:#E8F0E0;display:flex;align-items:center;justify-content:center;font-size:14px">💸</div><div style="flex:1"><div style="font-size:12px;color:#ccc">Felipe te pagó</div><div style="font-size:10px;color:#A09070">Asado viernes</div></div><div class="pos">+$22k</div></div>
-      <div class="row"><div style="width:30px;height:30px;border-radius:8px;background:#2D1500;display:flex;align-items:center;justify-content:center;font-size:14px">➕</div><div style="flex:1"><div style="font-size:12px;color:#ccc">Martina agregó entradas</div><div style="font-size:10px;color:#A09070">Cine grupo</div></div><div class="yel">$17k</div></div>
-    </div>
-    <button id="btn-act" onclick="toggleExtra('act')" style="display:block;width:100%;text-align:center;padding:9px 0 16px;font-size:11px;color:#F4A900;background:none;border:none;cursor:pointer;font-family:inherit">Ver más ↓</button>
+    <div id="home-act-list"></div>
+    <div style="height:16px"></div>
   </div>
 </div>
 
-<!-- ══ GRUPOS ══ -->
 <div class="pg" id="p-grupos">
   <div class="tb"><div class="logo" onclick="nav(0)" style="cursor:pointer">iO</div><div style="font-size:19px;font-weight:700">Grupos</div><div style="width:44px"></div></div>
   <div class="scroll" style="padding:0 16px">
-    <div style="display:flex;flex-direction:column;gap:5px">
-      <div class="row" onclick="go('grupo')"><div style="font-size:16px">🏠</div><div style="flex:1"><div style="font-size:13px;font-weight:600">Depto Feb</div><div style="font-size:10px;color:#A09070">4 personas</div></div><div class="neg">-$18.200</div></div>
-      <div class="row" onclick="go('grupo')"><div style="font-size:16px">🏔️</div><div style="flex:1"><div style="font-size:13px;font-weight:600">Viaje Mendoza</div><div style="font-size:10px;color:#A09070">6 personas</div></div><div class="pos">+$45.000</div></div>
-      <div class="row" onclick="go('grupo')"><div style="font-size:16px">🥩</div><div style="flex:1"><div style="font-size:13px;font-weight:600">Asado viernes</div><div style="font-size:10px;color:#A09070">5 personas</div></div><div class="pos">+$22.000</div></div>
-      <div class="row" onclick="go('grupo')"><div style="font-size:16px">🎬</div><div style="flex:1"><div style="font-size:13px;font-weight:600">Cine grupo</div><div style="font-size:10px;color:#A09070">3 personas</div></div><div class="neg">-$8.500</div></div>
-    </div>
+    <div id="grupos-list"></div>
   </div>
 </div>
 
-<!-- ══ AMIGOS ══ -->
 <div class="pg" id="p-amigos">
   <div class="tb"><div class="logo" onclick="nav(0)" style="cursor:pointer">iO</div><div style="font-size:19px;font-weight:700">Amigos</div><button onclick="go('agregar-amigo')" style="background:#F4A900;border:none;border-radius:10px;padding:8px 14px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;color:#4A403A">+ Agregar</button></div>
   <div class="scroll" style="padding:0 16px">
-    <div style="display:flex;flex-direction:column;gap:5px">
-      <div class="row"><div style="width:38px;height:38px;border-radius:50%;background:#F5E0E0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#C1666B">CR</div><div style="flex:1"><div style="font-size:13px;font-weight:600">Camila R.</div><div style="font-size:10px;color:#A09070">2 grupos en común</div></div><div class="neg">-$18.200</div></div>
-      <div class="row"><div style="width:38px;height:38px;border-radius:50%;background:#D4E8F0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#60A5FA">JP</div><div style="flex:1"><div style="font-size:13px;font-weight:600">Jorge P.</div><div style="font-size:10px;color:#A09070">1 grupo en común</div></div><div class="pos">+$45.000</div></div>
-      <div class="row"><div style="width:38px;height:38px;border-radius:50%;background:#E8E0F0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#A78BFA">MA</div><div style="flex:1"><div style="font-size:13px;font-weight:600">Martina A.</div><div style="font-size:10px;color:#A09070">1 grupo en común</div></div><div class="neg">-$8.500</div></div>
-      <div class="row"><div style="width:38px;height:38px;border-radius:50%;background:#E8F0E0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#34D399">FS</div><div style="flex:1"><div style="font-size:13px;font-weight:600">Felipe S.</div><div style="font-size:10px;color:#A09070">2 grupos en común</div></div><div class="pos">+$22.000</div></div>
-    </div>
+    <div id="amigos-list"></div>
   </div>
 </div>
 
-<!-- ══ AGREGAR AMIGO ══ -->
-<div class="pg" id="p-agregar-amigo">
-  <div class="back" onclick="go('amigos')"><i class="ti ti-arrow-left" style="font-size:17px;color:#A09070"></i><span>Agregar amigo</span></div>
-  <div class="scroll" style="padding:0 16px 16px">
-
-    <!-- OPCIÓN 1: LINK + COPIAR -->
-    <div style="background:#fff;border-radius:14px;border:1px solid #DDD5C5;padding:18px;margin-bottom:10px">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
-        <div style="width:40px;height:40px;border-radius:10px;background:#FFF8E0;display:flex;align-items:center;justify-content:center;flex-shrink:0">
-          <i class="ti ti-link" style="font-size:20px;color:#F4A900"></i>
-        </div>
-        <div>
-          <div style="font-size:14px;font-weight:700;color:#4A403A">Copiar link de invitación</div>
-          <div style="font-size:11px;color:#A09070;margin-top:2px">Comparte tu link único de iOwe</div>
-        </div>
-      </div>
-      <div style="display:flex;align-items:center;gap:8px;background:#F5F0E8;border-radius:10px;border:1px solid #DDD5C5;padding:10px 12px">
-        <div style="flex:1;font-size:12px;color:#7A6A58;font-family:monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">iowe.app/join/tomas-m-2024</div>
-        <button onclick="copyLink()" id="btn-copy-link" style="background:#F4A900;border:none;border-radius:7px;padding:6px 12px;font-size:11px;font-weight:700;color:#4A403A;cursor:pointer;font-family:inherit;white-space:nowrap;flex-shrink:0">Copiar</button>
-      </div>
-    </div>
-
-    <!-- OPCIÓN 2: EMAIL -->
-    <div style="background:#fff;border-radius:14px;border:1px solid #DDD5C5;padding:18px;margin-bottom:10px">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
-        <div style="width:40px;height:40px;border-radius:10px;background:#F5E8E0;display:flex;align-items:center;justify-content:center;flex-shrink:0">
-          <i class="ti ti-mail" style="font-size:20px;color:#C1666B"></i>
-        </div>
-        <div>
-          <div style="font-size:14px;font-weight:700;color:#4A403A">Invitar por email</div>
-          <div style="font-size:11px;color:#A09070;margin-top:2px">Le llegará una invitación directa</div>
-        </div>
-      </div>
-      <label style="font-size:10px;font-weight:700;color:#A09070;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:5px">Email del amigo</label>
-      <input class="fi" type="email" placeholder="amigo@correo.com" id="email-amigo" style="margin-bottom:10px;background:#F5F0E8">
-      <label style="font-size:10px;font-weight:700;color:#A09070;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:5px">Nombre (opcional)</label>
-      <input class="fi" type="text" placeholder="Ej: Jorge Pérez" id="nombre-amigo" style="margin-bottom:12px;background:#F5F0E8">
-      <button onclick="sendEmail()" class="btn-y" style="font-size:13px;padding:12px">
-        <i class="ti ti-send" style="font-size:15px;margin-right:6px"></i>Enviar invitación
-      </button>
-    </div>
-
-    <!-- OPCIÓN 3: COMPARTIR NATIVO -->
-    <div style="background:#fff;border-radius:14px;border:1px solid #DDD5C5;padding:18px">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
-        <div style="width:40px;height:40px;border-radius:10px;background:#E8F0E0;display:flex;align-items:center;justify-content:center;flex-shrink:0">
-          <i class="ti ti-share" style="font-size:20px;color:#4A7A30"></i>
-        </div>
-        <div>
-          <div style="font-size:14px;font-weight:700;color:#4A403A">Compartir por otra app</div>
-          <div style="font-size:11px;color:#A09070;margin-top:2px">WhatsApp, Telegram, Instagram, SMS…</div>
-        </div>
-      </div>
-      <button onclick="shareGeneral()" style="width:100%;padding:13px;background:#4A403A;border:none;border-radius:10px;font-size:13px;font-weight:700;color:#F5F0E8;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px">
-        <i class="ti ti-share" style="font-size:16px"></i>Compartir invitación
-      </button>
-    </div>
-
-  </div>
-</div>
-
-<!-- ══ ACTIVIDAD ══ -->
 <div class="pg" id="p-actividad">
   <div class="tb"><div class="logo" onclick="nav(0)" style="cursor:pointer">iO</div><div style="font-size:19px;font-weight:700">Actividad</div><div style="width:44px"></div></div>
   <div class="scroll" style="padding:0 16px">
@@ -400,86 +308,26 @@ body{font-family:'Sora',-apple-system,system-ui,sans-serif;color:#4A403A}
 
 <!-- ══ DETALLE GRUPO ══ -->
 <div class="pg" id="p-grupo">
-  <div class="back" onclick="back()"><i class="ti ti-arrow-left" style="font-size:17px;color:#555"></i><span>Viaje Mendoza</span></div>
+  <div class="back" onclick="back()"><i class="ti ti-arrow-left" style="font-size:17px;color:#A09070"></i><span id="grupo-title">Grupo</span></div>
   <div class="scroll" style="padding:0 16px">
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:4px">
-      <div class="card" style="padding:12px;text-align:center"><div style="font-size:9px;color:#A09070;margin-bottom:3px">Total</div><div style="font-size:16px;font-weight:700">$312k</div></div>
-      <div style="background:#E8F0E0;border-radius:14px;padding:12px;text-align:center"><div style="font-size:9px;color:#4A7A30;margin-bottom:3px">Tu saldo</div><div style="font-size:16px;font-weight:700;color:#4A7A30">+$45k</div></div>
-      <div class="card" style="padding:12px;text-align:center"><div style="font-size:9px;color:#A09070;margin-bottom:3px">Personas</div><div style="font-size:16px;font-weight:700">4</div></div>
+      <div class="card" style="padding:12px;text-align:center"><div style="font-size:9px;color:#A09070;margin-bottom:3px">Total</div><div id="grupo-total" style="font-size:16px;font-weight:700">$0</div></div>
+      <div style="background:#E8F0E0;border-radius:14px;padding:12px;text-align:center"><div style="font-size:9px;color:#4A7A30;margin-bottom:3px">Tu saldo</div><div id="grupo-saldo" style="font-size:16px;font-weight:700;color:#4A7A30">$0</div></div>
+      <div class="card" style="padding:12px;text-align:center"><div style="font-size:9px;color:#A09070;margin-bottom:3px">Personas</div><div id="grupo-personas" style="font-size:16px;font-weight:700">0</div></div>
     </div>
     <div class="sec">Gastos</div>
-    <div style="display:flex;flex-direction:column;gap:5px">
-      <div class="row"><div style="font-size:16px">🛏️</div><div style="flex:1"><div style="font-size:12px;font-weight:600">Hotel 2 noches</div><div style="font-size:10px;color:#A09070">Pagó Jorge</div></div><div style="font-size:12px;color:#555">$180k</div></div>
-      <div class="row"><div style="font-size:16px">⛽</div><div style="flex:1"><div style="font-size:12px;font-weight:600">Gasolina</div><div style="font-size:10px;color:#A09070">Pagaste tú</div></div><div style="font-size:12px;color:#555">$84k</div></div>
-      <div class="row"><div style="font-size:16px">🍽️</div><div style="flex:1"><div style="font-size:12px;font-weight:600">Cenas</div><div style="font-size:10px;color:#A09070">Pagó Camila</div></div><div style="font-size:12px;color:#555">$48k</div></div>
-    </div>
-    <div id="extra-gastos" style="display:none;flex-direction:column;gap:5px;margin-top:5px">
-      <div class="row"><div style="font-size:16px">🍺</div><div style="flex:1"><div style="font-size:12px;font-weight:600">Bodegas</div><div style="font-size:10px;color:#A09070">Pagaste tú</div></div><div style="font-size:12px;color:#555">$32k</div></div>
-      <div class="row"><div style="font-size:16px">🎿</div><div style="flex:1"><div style="font-size:12px;font-weight:600">Ski rental</div><div style="font-size:10px;color:#A09070">Pagó Jorge</div></div><div style="font-size:12px;color:#555">$96k</div></div>
-    </div>
-    <button id="btn-gastos" onclick="toggleExtra('gastos')" style="display:block;width:100%;text-align:center;padding:8px 0 2px;font-size:11px;color:#F4A900;background:none;border:none;cursor:pointer;font-family:inherit">Ver más ↓</button>
+    <div id="grupo-gastos-list"></div>
     <div class="sec">Integrantes</div>
-    <!-- Tú — siempre visible -->
-    <div class="card" style="padding:13px;margin-bottom:5px">
-      <div style="display:flex;align-items:center;gap:9px;margin-bottom:10px">
-        <div style="width:34px;height:34px;border-radius:50%;background:#FFF8E0;border:1.5px solid #F4A900;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#F4A900">TM</div>
-        <div style="flex:1"><div style="font-size:13px;font-weight:600">Tú</div></div>
-        <span style="font-size:9px;font-weight:700;color:#F4A900;background:#FFF8E0;padding:3px 8px;border-radius:6px;border:0.5px solid rgba(244,169,0,.3)">Tú</span>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px">
-        <div class="stat"><div style="font-size:8px;color:#A09070;margin-bottom:3px;text-transform:uppercase">Gastó</div><div style="font-size:12px;font-weight:700">$78k</div></div>
-        <div class="stat"><div style="font-size:8px;color:#A09070;margin-bottom:3px;text-transform:uppercase">Pagó</div><div style="font-size:12px;font-weight:700;color:#4A7A30">$84k</div></div>
-        <div class="stat" style="background:#E8F0E0"><div style="font-size:8px;color:#4A7A30;margin-bottom:3px;text-transform:uppercase">Le deben</div><div style="font-size:12px;font-weight:700;color:#4A7A30">+$45k</div></div>
-      </div>
-    </div>
-    <div id="extra-integrantes" style="display:none;flex-direction:column;gap:5px">
-      <div class="card" style="padding:13px">
-        <div style="display:flex;align-items:center;gap:9px;margin-bottom:10px">
-          <div style="width:34px;height:34px;border-radius:50%;background:#D4E8F0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#60A5FA">JP</div>
-          <div style="flex:1"><div style="font-size:13px;font-weight:600">Jorge P.</div><div style="font-size:10px;color:#A09070">@jorge.p · MP</div></div>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px">
-          <div class="stat"><div style="font-size:8px;color:#A09070;margin-bottom:3px;text-transform:uppercase">Gastó</div><div style="font-size:12px;font-weight:700">$78k</div></div>
-          <div class="stat"><div style="font-size:8px;color:#A09070;margin-bottom:3px;text-transform:uppercase">Pagó</div><div style="font-size:12px;font-weight:700;color:#4A7A30">$180k</div></div>
-          <div class="stat" style="background:#E8F0E0"><div style="font-size:8px;color:#4A7A30;margin-bottom:3px;text-transform:uppercase">Le deben</div><div style="font-size:12px;font-weight:700;color:#4A7A30">+$102k</div></div>
-        </div>
-      </div>
-      <div class="card" style="padding:13px">
-        <div style="display:flex;align-items:center;gap:9px;margin-bottom:10px">
-          <div style="width:34px;height:34px;border-radius:50%;background:#F5E0E0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#C1666B">CR</div>
-          <div style="flex:1"><div style="font-size:13px;font-weight:600">Camila R.</div><div style="font-size:10px;color:#A09070">@camila.r · MP</div></div>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px">
-          <div class="stat"><div style="font-size:8px;color:#A09070;margin-bottom:3px;text-transform:uppercase">Gastó</div><div style="font-size:12px;font-weight:700">$78k</div></div>
-          <div class="stat"><div style="font-size:8px;color:#A09070;margin-bottom:3px;text-transform:uppercase">Pagó</div><div style="font-size:12px;font-weight:700;color:#4A7A30">$48k</div></div>
-          <div class="stat" style="background:#F5E8E0"><div style="font-size:8px;color:#C1666B;margin-bottom:3px;text-transform:uppercase">Debe</div><div style="font-size:12px;font-weight:700;color:#C1666B">-$30k</div></div>
-        </div>
-      </div>
-      <div class="card" style="padding:13px">
-        <div style="display:flex;align-items:center;gap:9px;margin-bottom:10px">
-          <div style="width:34px;height:34px;border-radius:50%;background:#E8E0F0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#A78BFA">MA</div>
-          <div style="flex:1"><div style="font-size:13px;font-weight:600">Martina A.</div><div style="font-size:10px;color:#A09070">@martina.a · MP</div></div>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px">
-          <div class="stat"><div style="font-size:8px;color:#A09070;margin-bottom:3px;text-transform:uppercase">Gastó</div><div style="font-size:12px;font-weight:700">$78k</div></div>
-          <div class="stat"><div style="font-size:8px;color:#A09070;margin-bottom:3px;text-transform:uppercase">Pagó</div><div style="font-size:12px;font-weight:700;color:#555">$0</div></div>
-          <div class="stat" style="background:#F5E8E0"><div style="font-size:8px;color:#C1666B;margin-bottom:3px;text-transform:uppercase">Debe</div><div style="font-size:12px;font-weight:700;color:#C1666B">-$78k</div></div>
-        </div>
-      </div>
-    </div>
-    <button id="btn-integrantes" onclick="toggleExtra('integrantes')" style="display:block;width:100%;text-align:center;padding:8px 0 6px;font-size:11px;color:#F4A900;background:none;border:none;cursor:pointer;font-family:inherit">Ver más ↓</button>
+    <div id="grupo-integrantes-list"></div>
   </div>
   <div style="padding:8px 16px 14px;display:flex;flex-direction:column;gap:8px">
     <button class="btn-y" onclick="addGastoFromGrupo()" style="display:flex;align-items:center;justify-content:center;gap:8px">
       <i class="ti ti-plus" style="font-size:16px"></i>Agregar gasto
     </button>
-    <button onclick="go('liquidar')" style="width:100%;padding:13px;background:#EDE8DF;border:1px solid #D0C8B8;border-radius:13px;font-size:13px;font-weight:600;color:#7A6A58;cursor:pointer;font-family:inherit">
-      Liquidar grupo
-    </button>
+    <button onclick="go('liquidar')" style="width:100%;padding:13px;background:#EDE8DF;border:1px solid #D0C8B8;border-radius:13px;font-size:13px;font-weight:600;color:#7A6A58;cursor:pointer;font-family:inherit">Liquidar grupo</button>
   </div>
 </div>
 
-<!-- ══ LIQUIDAR ══ -->
 <div class="pg" id="p-liquidar">
   <div class="back" onclick="go('grupo')"><i class="ti ti-arrow-left" style="font-size:17px;color:#555"></i><span>Liquidar grupo</span></div>
   <div class="scroll" style="padding:0 16px">
@@ -817,8 +665,186 @@ body{font-family:'Sora',-apple-system,system-ui,sans-serif;color:#4A403A}
     <button class="ni" data-i="3" onclick="nav(3)"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 5.5l1.5 1.5l2.5-2.5"/><path d="M3.5 11.5l1.5 1.5l2.5-2.5"/><path d="M3.5 17.5l1.5 1.5l2.5-2.5"/><line x1="11" y1="6" x2="20" y2="6"/><line x1="11" y1="12" x2="20" y2="12"/><line x1="11" y1="18" x2="20" y2="18"/></svg><span>Activ.</span></button>
   </div>
 </div>
-</div><!-- #app -->
+</div><!-- #app --></div><!-- .device -->
 <script>
+// ── RENDER FUNCTIONS ──
+
+function renderHome(){
+  // Balance
+  var balEl=$('home-balance');
+  var teDebenEl=$('home-te-deben');
+  var debesEl=$('home-debes');
+  var gruposEl=$('home-grupos-list');
+  var actEl=$('home-act-list');
+
+  // Calculate balances from gastos
+  var teDeben=0, debes=0;
+  STATE.grupos.forEach(function(g){
+    var saldo=calcSaldoGrupo(g.id);
+    if(saldo>0) teDeben+=saldo;
+    else debes+=Math.abs(saldo);
+  });
+  var balance=teDeben-debes;
+
+  if(balEl){
+    balEl.textContent='$'+Math.abs(balance).toLocaleString('es-CL');
+    balEl.style.color=balance>=0?'#22C55E':'#C1666B';
+  }
+  if(teDebenEl) teDebenEl.textContent='$'+teDeben.toLocaleString('es-CL');
+  if(debesEl) debesEl.textContent='$'+debes.toLocaleString('es-CL');
+
+  // Grupos list
+  if(gruposEl){
+    if(STATE.grupos.length===0){
+      gruposEl.innerHTML='<div style="text-align:center;padding:24px 0;color:#C0B090;font-size:13px">No tienes grupos aún<br><span style="font-size:11px;color:#D0C8B8">Toca el + para crear uno</span></div>';
+    } else {
+      gruposEl.innerHTML='';
+      STATE.grupos.slice(0,2).forEach(function(g){
+        var saldo=calcSaldoGrupo(g.id);
+        var d=document.createElement('div');
+        d.className='row';
+        d.onclick=function(){abrirGrupo(g.id);};
+        d.innerHTML='<div style="font-size:16px">'+g.e+'</div><div style="flex:1"><div style="font-size:13px;font-weight:600">'+g.n+'</div><div style="font-size:10px;color:#A09070">'+g.miembros.length+' personas</div></div><div style="font-size:12px;font-weight:700;color:'+(saldo>=0?'#4A7A30':'#C1666B')+'">'+(saldo>=0?'+':'')+' $'+Math.abs(saldo).toLocaleString('es-CL')+'</div>';
+        gruposEl.appendChild(d);
+      });
+    }
+  }
+
+  // Actividad
+  if(actEl){
+    var gastos=STATE.gastos.slice(-3).reverse();
+    if(gastos.length===0){
+      actEl.innerHTML='<div style="text-align:center;padding:24px 0;color:#C0B090;font-size:13px">Sin actividad aún</div>';
+    } else {
+      actEl.innerHTML='';
+      gastos.forEach(function(g){
+        var d=document.createElement('div');
+        d.className='row';
+        d.innerHTML='<div style="width:30px;height:30px;border-radius:8px;background:#FFF8E0;display:flex;align-items:center;justify-content:center;font-size:14px">➕</div><div style="flex:1"><div style="font-size:12px;color:#4A403A">'+g.desc+'</div><div style="font-size:10px;color:#A09070">'+g.grupoN+'</div></div><div style="font-size:12px;font-weight:700;color:#A09070">$'+parseInt(g.monto).toLocaleString('es-CL')+'</div>';
+        actEl.appendChild(d);
+      });
+    }
+  }
+}
+
+function renderGrupos(){
+  var el=$('grupos-list');
+  if(!el) return;
+  if(STATE.grupos.length===0){
+    el.innerHTML='<div style="text-align:center;padding:40px 20px;color:#C0B090;font-size:13px;line-height:1.8">No tienes grupos aún.<br>Toca el <strong style="color:#F4A900">+</strong> para crear el primero.</div>';
+    return;
+  }
+  el.innerHTML='';
+  STATE.grupos.forEach(function(g){
+    var saldo=calcSaldoGrupo(g.id);
+    var d=document.createElement('div');
+    d.className='row';
+    d.style.marginBottom='5px';
+    d.onclick=function(){abrirGrupo(g.id);};
+    d.innerHTML='<div style="font-size:16px">'+g.e+'</div><div style="flex:1"><div style="font-size:13px;font-weight:600">'+g.n+'</div><div style="font-size:10px;color:#A09070">'+g.miembros.length+' personas</div></div><div style="font-size:12px;font-weight:700;color:'+(saldo>=0?'#4A7A30':'#C1666B')+'">'+(saldo>=0?'+':(saldo<0?'-':''))+'$'+Math.abs(saldo).toLocaleString('es-CL')+'</div>';
+    el.appendChild(d);
+  });
+}
+
+function renderAmigos(){
+  var el=$('amigos-list');
+  if(!el) return;
+  if(STATE.amigos.length===0){
+    el.innerHTML='<div style="text-align:center;padding:40px 20px;color:#C0B090;font-size:13px;line-height:1.8">No tienes amigos agregados.<br>Toca <strong style="color:#F4A900">+ Agregar</strong> para invitar.</div>';
+    return;
+  }
+  el.innerHTML='';
+  STATE.amigos.forEach(function(a){
+    var d=document.createElement('div');
+    d.className='row';
+    d.style.marginBottom='5px';
+    d.innerHTML='<div style="width:38px;height:38px;border-radius:50%;background:'+a.bg+';display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:'+a.col+'">'+a.ini+'</div><div style="flex:1"><div style="font-size:13px;font-weight:600">'+a.nombre+'</div><div style="font-size:10px;color:#A09070">'+a.email+'</div></div>';
+    el.appendChild(d);
+  });
+}
+
+function renderGrupoDetalle(){
+  if(!curGrupo) return;
+  var g=STATE.grupos.find(function(x){return x.id===curGrupo;});
+  if(!g) return;
+
+  // Header title
+  var titleEl=$('grupo-title');
+  if(titleEl) titleEl.textContent=g.e+' '+g.n;
+
+  // Stats
+  var gastos=STATE.gastos.filter(function(x){return x.grupoId===curGrupo;});
+  var total=gastos.reduce(function(s,x){return s+parseInt(x.monto);},0);
+  var saldo=calcSaldoGrupo(curGrupo);
+
+  var totalEl=$('grupo-total'); if(totalEl) totalEl.textContent='$'+total.toLocaleString('es-CL');
+  var saldoEl=$('grupo-saldo');
+  if(saldoEl){saldoEl.textContent=(saldo>=0?'+':'')+saldo.toLocaleString('es-CL');saldoEl.style.color=saldo>=0?'#4A7A30':'#C1666B';}
+  var persEl=$('grupo-personas'); if(persEl) persEl.textContent=g.miembros.length;
+
+  // Gastos list
+  var gastosEl=$('grupo-gastos-list');
+  if(gastosEl){
+    if(gastos.length===0){
+      gastosEl.innerHTML='<div style="text-align:center;padding:20px;color:#C0B090;font-size:13px">Sin gastos aún</div>';
+    } else {
+      gastosEl.innerHTML='';
+      gastos.slice(0,3).forEach(function(gasto){
+        var d=document.createElement('div');
+        d.className='row';
+        d.style.marginBottom='5px';
+        d.innerHTML='<div style="font-size:16px">'+getCatEmoji(gasto.cat)+'</div><div style="flex:1"><div style="font-size:12px;font-weight:600">'+gasto.desc+'</div><div style="font-size:10px;color:#A09070">Pagó '+gasto.pagador+'</div></div><div style="font-size:12px;color:#A09070">$'+parseInt(gasto.monto).toLocaleString('es-CL')+'</div>';
+        gastosEl.appendChild(d);
+      });
+    }
+  }
+
+  // Integrantes
+  var intEl=$('grupo-integrantes-list');
+  if(intEl){
+    intEl.innerHTML='';
+    g.miembros.forEach(function(m,i){
+      var esTu=i===0;
+      var d=document.createElement('div');
+      d.className='card';
+      d.style.cssText='padding:13px;margin-bottom:5px'+(esTu?';border:1.5px solid rgba(244,169,0,.25)':'');
+      d.innerHTML='<div style="display:flex;align-items:center;gap:9px"><div style="width:34px;height:34px;border-radius:50%;background:'+(esTu?'#FFF8E0':'#EDE8DF')+';border:'+(esTu?'1.5px solid #F4A900':'none')+';display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:'+(esTu?'#F4A900':'#A09070')+'">'+m.ini+'</div><div style="flex:1"><div style="font-size:13px;font-weight:600">'+m.nombre+'</div></div>'+(esTu?'<span style="font-size:9px;font-weight:700;color:#F4A900;background:#FFF8E0;padding:3px 8px;border-radius:6px">Tú</span>':'')+'</div>';
+      intEl.appendChild(d);
+    });
+  }
+}
+
+function calcSaldoGrupo(grupoId){
+  var gastos=STATE.gastos.filter(function(x){return x.grupoId===grupoId;});
+  var saldo=0;
+  gastos.forEach(function(g){
+    var n=parseInt(g.monto)||0;
+    var partes=g.division||[];
+    var miParte=partes.find(function(p){return p.id==='tu';});
+    if(g.pagador==='Tú') saldo+=(n-(miParte?parseInt(miParte.monto):Math.round(n/partes.length)));
+    else saldo-=(miParte?parseInt(miParte.monto):Math.round(n/partes.length));
+  });
+  return saldo;
+}
+
+function getCatEmoji(cat){
+  var map={'Comida':'🍕','Transporte':'🚗','Alojam.':'🏠','Entrete.':'🎉','Compras':'🛒','Otro':'📦'};
+  return map[cat]||'📦';
+}
+
+function abrirGrupo(id){
+  curGrupo=id;
+  var g=STATE.grupos.find(function(x){return x.id===id;});
+  if(g){
+    selG_={id:g.id,n:g.n,e:g.e};
+    // Update GRUPOS compat
+    GRUPOS[g.id]=g;
+  }
+  renderGrupoDetalle();
+  go('grupo');
+}
+
+
 // ── ONBOARDING ──
 var obSlide=0;
 var OB_DONE_KEY='iowe_ob_done';
@@ -868,11 +894,13 @@ function selAv(el){
 function obCrearCuenta(){
   var nombre=($('ob-nombre')||{}).value||'';
   var email=($('ob-email')||{}).value||'';
+  var rut=($('ob-rut')||{}).value||'';
+  var banco=($('ob-banco')||{}).value||'';
+  var cuenta=($('ob-cuenta')||{}).value||'';
   if(!nombre.trim()){var f=$('ob-nombre');if(f){f.style.borderColor='#C1666B';f.focus();}return;}
   if(!email.trim()||email.indexOf('@')===-1){var f2=$('ob-email');if(f2){f2.style.borderColor='#C1666B';f2.focus();}return;}
-  // Save to localStorage
-  try{localStorage.setItem('iowe_nombre',nombre);}catch(e){}
-  // Move to tab 2
+  STATE.user={nombre:nombre,email:email,rut:rut,banco:banco,cuenta:cuenta,color:obColor,ini:getInitials(nombre)};
+  saveState();
   obTab(1);
   obSlide=0;
   howRender();
@@ -903,18 +931,50 @@ function howRender(){
 
 function obFinish(){
   try{localStorage.setItem(OB_DONE_KEY,'1');}catch(e){}
+  renderAll();
   go('home');
   nav(0);
+}
+
+function renderAll(){
+  renderHome();
+  renderGrupos();
+  renderAmigos();
 }
 
 // Check if onboarding already done
 
 const MODAL_PG=['grupo','liquidar','pago','exito','perfil','gasto1','gasto2','gasto3','gasto-ok','nuevo-grupo','agregar-amigo'];
-const GRUPOS={depto:{n:'Depto Feb',e:'🏠'},mendoza:{n:'Viaje Mendoza',e:'🏔️'},asado:{n:'Asado viernes',e:'🥩'},cine:{n:'Cine grupo',e:'🎬'}};
 const EMOJIS=['🏠','🏔️','🎉','🍕','🥩','🎬','✈️','🏖️','🎮','🚗','🏋️','🎸','☕','🛒','💼','🎓','🏥','🐾'];
-let curNav=0, selG_={id:'depto',...GRUPOS.depto}, amtStr='0';
+let curNav=0, amtStr='0';
 const ngMem=new Set();
 const $=id=>document.getElementById(id);
+
+// ── ESTADO GLOBAL (localStorage) ──
+function loadState(){
+  try{
+    var raw=localStorage.getItem('iowe_state');
+    if(raw) return JSON.parse(raw);
+  }catch(e){}
+  return {
+    user: null,
+    grupos: [],
+    amigos: [],
+    gastos: []
+  };
+}
+function saveState(){
+  try{ localStorage.setItem('iowe_state', JSON.stringify(STATE)); }catch(e){}
+}
+var STATE = loadState();
+
+// Current group being viewed
+var curGrupo = null;
+var selG_ = {id:null, n:'', e:'🏠'};
+
+// Compat shim — GRUPOS object for gasto selector
+var GRUPOS = {};
+STATE.grupos.forEach(function(g){ GRUPOS[g.id]=g; });
 
 function go(name){
   const pg=$('p-'+name);
@@ -932,6 +992,9 @@ function nav(i){
     var on=parseInt(el.dataset.i)===i;
     el.classList.toggle('on',on);
   });
+  if(i===0) renderHome();
+  if(i===1) renderGrupos();
+  if(i===2) renderAmigos();
 }
 
 function back(){
@@ -1139,12 +1202,54 @@ function irAConfigurar(){
 }
 
 function confirmGasto(){
-  const n=parseInt(amtStr)||0; if(!n) return;
-  const d=$('g-desc').value||'Gasto';
-  const ok=$('ok-desc'); if(ok) ok.innerHTML=d+' · $'+n.toLocaleString('es-CL')+'<br>en '+selG_.n+' · dividido en 3';
-  const sp1=$('sp1'); if(sp1) sp1.textContent='$'+Math.round(n/3).toLocaleString('es-CL');
-  const sp2=$('sp2'); if(sp2) sp2.textContent='$'+Math.round(n/3).toLocaleString('es-CL');
-  const sp3=$('sp3'); if(sp3) sp3.textContent='+$'+Math.round(n*2/3).toLocaleString('es-CL');
+  var n=parseInt(amtStr)||0; if(!n) return;
+  var d=($('g-desc')||{}).value||'Gasto';
+
+  // Get active division members
+  var active=MEMBERS.filter(function(m){return divMembers[m.id];});
+  var division=active.map(function(m){
+    return {id:m.id,nombre:m.label,monto:Math.round(n/active.length)};
+  });
+
+  // Get who paid
+  var pagador='Tú';
+  if($('p-otro')&&$('p-otro').classList.contains('on')){
+    ['camila','jorge','martina'].forEach(function(k){
+      var ck=$('ck-mp-'+k);
+      if(ck&&ck.className.indexOf('check')>-1){
+        var names={camila:'Camila R.',jorge:'Jorge P.',martina:'Martina A.'};
+        pagador=names[k];
+      }
+    });
+  }
+
+  // Get category
+  var cat='Otro';
+  var chips=document.querySelectorAll('#cat-chips .chip');
+  chips.forEach(function(c){if(c.classList.contains('on')) cat=c.textContent.replace(/[🍕🚗🏠🎉🛒📦]\s*/,'').trim();});
+
+  // Save gasto
+  var g=STATE.grupos.find(function(x){return x.id===selG_.id;});
+  var gasto={
+    id:'gs_'+Date.now(),
+    grupoId:selG_.id,
+    grupoN:selG_.n,
+    desc:d,
+    monto:n,
+    cat:cat,
+    pagador:pagador,
+    division:division,
+    fecha:new Date().toISOString()
+  };
+  STATE.gastos.push(gasto);
+  saveState();
+
+  // Show success
+  var each=Math.round(n/active.length);
+  var ok=$('ok-desc'); if(ok) ok.innerHTML=d+' · $'+n.toLocaleString('es-CL')+'<br>en '+selG_.n+' · dividido en '+active.length;
+  var sp1=$('sp1'); if(sp1) sp1.textContent='$'+each.toLocaleString('es-CL');
+  var sp2=$('sp2'); if(sp2) sp2.textContent='$'+each.toLocaleString('es-CL');
+  var sp3=$('sp3'); if(sp3) sp3.textContent='+$'+(n-each).toLocaleString('es-CL');
   go('gasto-ok');
 }
 
@@ -1184,14 +1289,45 @@ function ngAdd(name,ini,bg,col){
 function ngRem(el,name){ngMem.delete(name);el.parentElement.remove();}
 
 function ngCreate(){
-  const name=$('ng-name').value.trim();
-  if(!name){const f=$('ng-name');f.style.borderColor='#C1666B';f.focus();return;}
+  var nameEl=$('ng-name'); if(!nameEl) return;
+  var name=nameEl.value.trim();
+  if(!name){nameEl.style.borderColor='#C1666B';nameEl.focus();return;}
+
+  // Get selected emoji
+  var emojiEl=$('sel-emoji');
+  var emoji=emojiEl?emojiEl.textContent:'🏠';
+
+  // Build miembros array — Tú siempre primero
+  var user=STATE.user;
+  var ini=user?getInitials(user.nombre):'TM';
+  var miembros=[{id:'tu',nombre:'Tú',ini:ini,bg:'#FFF8E0',col:'#F4A900'}];
+  ngMem.forEach(function(n){
+    var parts=n.split('|');
+    miembros.push({id:parts[0],nombre:parts[1],ini:parts[2],bg:parts[3]||'#EDE8DF',col:parts[4]||'#A09070'});
+  });
+
+  // Create grupo
+  var grupo={
+    id:'g_'+Date.now(),
+    n:name,
+    e:emoji,
+    desc:($('ng-desc')||{}).value||'',
+    miembros:miembros,
+    createdAt:new Date().toISOString()
+  };
+  STATE.grupos.push(grupo);
+  GRUPOS[grupo.id]=grupo;
+  saveState();
+
+  // Reset form
   ngMem.clear();
-  const chips=$('ng-chips');
-  if(chips) chips.innerHTML='<span style="font-size:11px;color:#B8A888;padding:4px 0">Tu ya estas incluido</span>';
-  const nn=$('ng-name'); if(nn){nn.value='';nn.style.borderColor='';}
-  const nd=$('ng-desc'); if(nd) nd.value='';
-  initEmojis(); nav(1);
+  nameEl.value=''; nameEl.style.borderColor='';
+  var nd=$('ng-desc'); if(nd) nd.value='';
+  var chips=$('ng-chips'); if(chips) chips.innerHTML='<span style="font-size:11px;color:#B8A888;padding:4px 0">Tu ya estás incluido</span>';
+  initEmojis();
+
+  // Go to grupo detail
+  abrirGrupo(grupo.id);
 }
 
 function copyVal(valId,btnId){

@@ -3,6 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,viewport-fit=cover">
+<script>
+// iOS Safari: ni 100vh (se rompe cuando la barra del navegador está visible)
+// ni 100dvh (se rompe en el arranque en frío de la app instalada como PWA)
+// son confiables en todos los casos. Medimos la altura real disponible con JS
+// y la dejamos en una variable CSS que el resto del layout usa.
+(function(){
+  function setAppHeight(){
+    var h = (window.visualViewport && window.visualViewport.height) || window.innerHeight;
+    document.documentElement.style.setProperty('--app-height', h + 'px');
+  }
+  setAppHeight();
+  window.addEventListener('resize', setAppHeight);
+  window.addEventListener('orientationchange', function(){ setTimeout(setAppHeight, 150); });
+  if(window.visualViewport){ window.visualViewport.addEventListener('resize', setAppHeight); }
+  document.addEventListener('DOMContentLoaded', setAppHeight);
+})();
+</script>
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -25,7 +42,7 @@ body{font-family:'Sora',-apple-system,system-ui,sans-serif;color:#4A403A}
 #app{display:flex;flex-direction:column;height:780px;width:360px;border-radius:41px;background:#F5F0E8;overflow:hidden;position:relative;}
 @media (display-mode: standalone), (max-width: 600px) {
   body{background:#F5F0E8;align-items:flex-start;}
-  .device{border-radius:0;padding:0;box-shadow:none;width:100%;height:100vh;}
+  .device{border-radius:0;padding:0;box-shadow:none;width:100%;height:100vh;height:calc(var(--app-height, 100vh));}
   #app{width:100%;height:100%;border-radius:0;}
 }
 .sb{display:flex;justify-content:space-between;padding:max(env(safe-area-inset-top),14px) 22px 6px;font-size:11px;color:#B8A888;flex-shrink:0}

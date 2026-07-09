@@ -210,8 +210,8 @@ body{font-family:'Sora',-apple-system,system-ui,sans-serif;color:#4A403A}
           </div>
           <div class="how-slide">
             <div style="width:80px;height:80px;background:#D4E8F0;border-radius:24px;display:flex;align-items:center;justify-content:center;font-size:38px;border:2px solid rgba(74,144,196,.15)">💸</div>
-            <div style="font-size:20px;font-weight:800;color:#4A403A;letter-spacing:-.3px">Liquida con MP</div>
-            <div style="font-size:13px;color:#A09070;line-height:1.6;max-width:260px">Paga directo desde iOwe con Mercado Pago. Un tap y la deuda queda saldada automáticamente.</div>
+            <div style="font-size:20px;font-weight:800;color:#4A403A;letter-spacing:-.3px">Liquida como quieras</div>
+            <div style="font-size:13px;color:#A09070;line-height:1.6;max-width:260px">Paga por Mercado Pago, MACH o Tenpo, o simplemente copia los datos bancarios y transfiere directo. Tú eliges.</div>
           </div>
         </div>
       </div>
@@ -310,44 +310,6 @@ body{font-family:'Sora',-apple-system,system-ui,sans-serif;color:#4A403A}
     <div id="liq-tu-deuda-wrap"></div>
     <div class="sec">Deudas del grupo</div>
     <div id="liq-deudas-grupo-list" style="display:flex;flex-direction:column;gap:5px"></div>
-  </div>
-</div>
-<div class="pg" id="p-pago">
-  <div class="back" onclick="go('liquidar')"><i class="ti ti-arrow-left" style="font-size:17px;color:#555"></i><span>Confirmar pago</span></div>
-  <div class="scroll" style="padding:0 16px">
-    <div class="card" style="padding:18px;margin-bottom:12px">
-      <div style="font-size:9px;color:#A09070;margin-bottom:10px">Pagando a</div>
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
-        <div style="width:40px;height:40px;border-radius:50%;background:#F5E0E0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#C1666B">CR</div>
-        <div><div style="font-size:14px;font-weight:600">Camila Rodríguez</div><div style="font-size:10px;color:#A09070">@camila.r · MP vinculado</div></div>
-      </div>
-      <div style="font-size:9px;color:#A09070;margin-bottom:2px">Concepto</div>
-      <div style="font-size:12px;color:#A09070;margin-bottom:14px">Viaje Mendoza — cenas y almuerzo</div>
-      <div style="display:flex;justify-content:space-between;align-items:baseline;border-top:0.5px solid #1E1E1E;padding-top:13px">
-        <div style="font-size:9px;color:#A09070">Total a pagar</div>
-        <div style="font-size:34px;font-weight:900;letter-spacing:-1.5px">$18.200</div>
-      </div>
-    </div>
-    <div style="display:flex;flex-direction:column;gap:7px">
-      <button class="btn-b" onclick="go('exito')"><i class="ti ti-credit-card" style="font-size:15px"></i>Pagar con Mercado Pago</button>
-      <button class="btn-g">Pagar en cuotas</button>
-    </div>
-    <div style="padding:10px 0;font-size:10px;color:#B8A888;text-align:center;line-height:1.5">Al confirmar serás redirigido a Mercado Pago.<br>iOwe registra el pago automáticamente.</div>
-  </div>
-</div>
-<div class="pg" id="p-exito">
-  <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;padding:28px 20px">
-    <div class="suc" style="margin-bottom:18px"><i class="ti ti-check" style="font-size:34px;color:#F4A900"></i></div>
-    <div style="font-size:20px;font-weight:700;margin-bottom:6px">Pago enviado</div>
-    <div style="font-size:12px;color:#A09070;text-align:center;line-height:1.6;margin-bottom:22px">$18.200 a Camila R.<br>Deuda saldada · Viaje Mendoza</div>
-    <div class="card" style="width:100%;padding:16px;text-align:center;margin-bottom:22px">
-      <div style="font-size:9px;color:#A09070;margin-bottom:4px">Nuevo balance neto</div>
-      <div style="font-size:30px;font-weight:900;color:#4A7A30;letter-spacing:-1.5px">+$26.700</div>
-    </div>
-    <div style="width:100%;display:flex;flex-direction:column;gap:8px">
-      <button class="btn-y" onclick="go('grupo')">Volver al grupo</button>
-      <button class="btn-g" onclick="nav(0)">Ir al home</button>
-    </div>
   </div>
 </div>
 <div class="pg" id="p-gasto1">
@@ -1026,7 +988,7 @@ function loadDemoData(){
   ];
   saveState();
 }
-const MODAL_PG=['grupo','liquidar','pago','exito','perfil','gasto1','gasto2','gasto3','gasto-ok','nuevo-grupo','agregar-amigo'];
+const MODAL_PG=['grupo','liquidar','perfil','gasto1','gasto2','gasto3','gasto-ok','nuevo-grupo','agregar-amigo'];
 const EMOJIS=['🏠','🏔️','🎉','🍕','🥩','🎬','✈️','🏖️','🎮','🚗','🏋️','🎸','☕','🛒','💼','🎓','🏥','🐾'];
 let curNav=0, amtStr='0';
 const ngMem=new Set();

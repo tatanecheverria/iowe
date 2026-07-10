@@ -1977,7 +1977,7 @@ function shareAll(){
 }
 function getInviteUrl(){
   var slug=(STATE.user&&STATE.user.slug)?STATE.user.slug:'nuevo';
-  return 'iowe.app/join/'+slug;
+  return 'iowe.app/unete/'+slug;
 }
 function getInviteMsg(){
   return 'Te invito a iOwe para dividir gastos: https://'+getInviteUrl();
@@ -1993,7 +1993,7 @@ function copyLink(){
 function shareWA(){window.open('https://wa.me/?text='+encodeURIComponent(getInviteMsg()),'_blank');}
 function shareSMS(){window.location.href='sms:?body='+encodeURIComponent(getInviteMsg());}
 function shareGeneral(){
-  if(navigator.share) navigator.share({title:'Unete a iOwe',text:getInviteMsg(),url:'https://'+getInviteUrl()});
+  if(navigator.share) navigator.share({title:'Únete a iOwe',text:getInviteMsg(),url:'https://'+getInviteUrl()});
   else copyLink();
 }
 var PALETA_AMIGOS=[

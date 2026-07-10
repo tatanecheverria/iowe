@@ -348,7 +348,15 @@ body{font-family:'Sora',-apple-system,system-ui,sans-serif;color:#4A403A}
     </div>
     <div class="sec">Gastos</div>
     <div id="grupo-gastos-list"></div>
-    <div class="sec">Integrantes</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:18px;padding:0 0 7px">
+      <div class="sec" style="margin:0;padding:0">Integrantes</div>
+      <button onclick="toggleAgregarIntegrante()" style="background:none;border:1px solid rgba(244,169,0,.4);border-radius:8px;padding:5px 10px;font-size:11px;font-weight:700;color:#F4A900;cursor:pointer;font-family:inherit">+ Agregar</button>
+    </div>
+    <div id="gm-panel" style="display:none;margin-bottom:10px">
+      <input class="fi" id="gm-search" placeholder="Buscar amigo..." oninput="gmSearch(this.value)" style="margin-bottom:6px">
+      <div id="gm-sugg" style="background:#EDE8DF;border-radius:11px;border:0.5px solid #DDD5C5;overflow:hidden;display:none"></div>
+      <div id="gm-empty" style="display:none;font-size:11px;color:#A09070;padding:8px 2px;line-height:1.5">Todos tus amigos ya están en este grupo. <span style="color:#F4A900;cursor:pointer;font-weight:700" onclick="go('agregar-amigo')">Agregar un amigo nuevo →</span></div>
+    </div>
     <div id="grupo-integrantes-list"></div>
   </div>
   <div style="padding:8px 16px 14px;display:flex;flex-direction:column;gap:8px">
@@ -825,6 +833,67 @@ function renderGrupoDetalle(){
       intEl.appendChild(d);
     });
   }
+}
+function toggleAgregarIntegrante(){
+  var panel=$('gm-panel');
+  if(!panel) return;
+  var open=panel.style.display==='block';
+  panel.style.display=open?'none':'block';
+  if(!open){
+    var s=$('gm-search'); if(s){s.value='';s.focus();}
+    gmSearch('');
+  }
+}
+function gmSearch(query){
+  var sugg=$('gm-sugg'), empty=$('gm-empty');
+  if(!sugg) return;
+  var g=STATE.grupos.find(function(x){return x.id===curGrupo;});
+  if(!g) return;
+  var idsEnGrupo={};
+  g.miembros.forEach(function(m){idsEnGrupo[m.id]=true;});
+  var q=(query||'').toLowerCase();
+  var matches=STATE.amigos.filter(function(a){
+    return !idsEnGrupo[a.id] && a.nombre.toLowerCase().indexOf(q)!==-1;
+  });
+  sugg.innerHTML='';
+  if(!matches.length){
+    sugg.style.display='none';
+    if(empty) empty.style.display=STATE.amigos.every(function(a){return idsEnGrupo[a.id];})?'block':'none';
+    return;
+  }
+  if(empty) empty.style.display='none';
+  matches.forEach(function(a,i){
+    var row=document.createElement('div');
+    row.style.cssText='display:flex;align-items:center;gap:9px;padding:10px 13px;cursor:pointer'+(i<matches.length-1?';border-bottom:0.5px solid #DDD5C5':'');
+    row.onclick=function(){gmAdd(a.id);};
+    var av=document.createElement('div');
+    av.style.cssText='width:28px;height:28px;border-radius:50%;background:'+a.bg+';display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:'+a.col;
+    av.textContent=a.ini;
+    var nameSpan=document.createElement('span');
+    nameSpan.style.cssText='flex:1;font-size:13px;color:#4A403A';
+    nameSpan.textContent=a.nombre;
+    var plus=document.createElement('i');
+    plus.className='ti ti-plus';
+    plus.style.cssText='font-size:14px;color:#F4A900';
+    row.appendChild(av); row.appendChild(nameSpan); row.appendChild(plus);
+    sugg.appendChild(row);
+  });
+  sugg.style.display='block';
+}
+function gmAdd(id){
+  var g=STATE.grupos.find(function(x){return x.id===curGrupo;});
+  if(!g) return;
+  if(g.miembros.some(function(m){return m.id===id;})) return;
+  var a=STATE.amigos.find(function(x){return x.id===id;});
+  if(!a) return;
+  g.miembros.push({id:a.id,nombre:a.nombre,ini:a.ini,bg:a.bg,col:a.col});
+  saveState();
+  selG_={id:g.id,n:g.n,e:g.e,miembros:g.miembros};
+  var s=$('gm-search'); if(s) s.value='';
+  gmSearch('');
+  renderGrupoDetalle();
+  renderHome();
+  renderGrupos();
 }
 function eliminarGasto(id){
   if(!confirm('¿Eliminar este gasto?')) return;

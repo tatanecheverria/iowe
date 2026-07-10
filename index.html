@@ -59,6 +59,15 @@ body{font-family:'Sora',-apple-system,system-ui,sans-serif;color:#4A403A}
   body{background:#F5F0E8;align-items:flex-start;}
   .device{border-radius:0;padding:0;box-shadow:none;width:100%;height:100vh;height:calc(var(--app-height, 100vh));}
   #app{width:100%;height:100%;border-radius:0;}
+  /* La .sb es una barra de estado FALSA (9:41 + puntitos) pensada solo para
+     el mockup de escritorio. En un celular real el propio iOS ya muestra su
+     barra de estado real arriba, así que mostrar la falsa además se ve como
+     un segundo bloque pegado encima — como si la app no calzara con la
+     pantalla. La ocultamos pero mantenemos su alto (que reserva el
+     safe-area-inset-top real) para que el contenido no quede debajo del
+     notch/Dynamic Island.
+  */
+  .sb{visibility:hidden;}
 }
 .sb{display:flex;justify-content:space-between;padding:max(env(safe-area-inset-top),14px) 22px 6px;font-size:11px;color:#B8A888;flex-shrink:0}
 .pg{display:none;flex-direction:column;flex:1;min-height:0;overflow:hidden}
@@ -304,18 +313,7 @@ body{font-family:'Sora',-apple-system,system-ui,sans-serif;color:#4A403A}
 </div>
 <div class="pg" id="p-actividad">
   <div class="tb"><div class="logo" onclick="nav(0)" style="cursor:pointer">iO</div><div style="font-size:19px;font-weight:700">Actividad</div><div style="width:44px"></div></div>
-  <div class="scroll" style="padding:0 16px">
-    <div style="font-size:10px;color:#B8A888;text-transform:uppercase;letter-spacing:.7px;margin-bottom:7px">Hoy</div>
-    <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:14px">
-      <div class="row"><div style="width:30px;height:30px;border-radius:8px;background:#E8F0E0;display:flex;align-items:center;justify-content:center;font-size:14px">💸</div><div style="flex:1"><div style="font-size:12px;color:#ccc">Jorge te pagó $45.000</div><div style="font-size:10px;color:#A09070">Viaje Mendoza · 2h</div></div><div class="pos">+$45k</div></div>
-      <div class="row"><div style="width:30px;height:30px;border-radius:8px;background:#2D1500;display:flex;align-items:center;justify-content:center;font-size:14px">➕</div><div style="flex:1"><div style="font-size:12px;color:#ccc">Agregaste cena italiana</div><div style="font-size:10px;color:#A09070">Depto Feb · 5h</div></div><div class="yel">$32k</div></div>
-    </div>
-    <div style="font-size:10px;color:#B8A888;text-transform:uppercase;letter-spacing:.7px;margin-bottom:7px">Ayer</div>
-    <div style="display:flex;flex-direction:column;gap:5px">
-      <div class="row"><div style="width:30px;height:30px;border-radius:8px;background:#F5E8E0;display:flex;align-items:center;justify-content:center;font-size:13px;color:#C1666B;font-weight:700">↑</div><div style="flex:1"><div style="font-size:12px;color:#ccc">Pagaste a Camila R.</div><div style="font-size:10px;color:#A09070">Depto Feb</div></div><div class="neg">-$18k</div></div>
-      <div class="row"><div style="width:30px;height:30px;border-radius:8px;background:#E8F0E0;display:flex;align-items:center;justify-content:center;font-size:14px">💸</div><div style="flex:1"><div style="font-size:12px;color:#ccc">Felipe te pagó $22.000</div><div style="font-size:10px;color:#A09070">Asado viernes</div></div><div class="pos">+$22k</div></div>
-    </div>
-  </div>
+  <div class="scroll" style="padding:0 16px" id="actividad-list"></div>
 </div>
 <div class="pg" id="p-grupo">
   <div class="back" onclick="back()"><i class="ti ti-arrow-left" style="font-size:17px;color:#A09070"></i><span id="grupo-title">Grupo</span></div>
@@ -958,6 +956,50 @@ function renderAll(){
   renderGrupos();
   renderAmigos();
   renderPerfil();
+  renderActividad();
+}
+function fmtFechaGrupo(fechaStr){
+  var hoy=new Date(); hoy.setHours(0,0,0,0);
+  var ayer=new Date(hoy); ayer.setDate(ayer.getDate()-1);
+  var f=new Date((fechaStr||'')+'T00:00:00');
+  if(isNaN(f.getTime())) return 'Otros';
+  f.setHours(0,0,0,0);
+  if(f.getTime()===hoy.getTime()) return 'Hoy';
+  if(f.getTime()===ayer.getTime()) return 'Ayer';
+  var meses=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  return meses[f.getMonth()]+' '+f.getFullYear();
+}
+function renderActividad(){
+  var el=$('actividad-list');
+  if(!el) return;
+  el.innerHTML='';
+  var gastos=STATE.gastos.slice().sort(function(a,b){ return (b.fecha||'').localeCompare(a.fecha||''); });
+  if(gastos.length===0){
+    var emp=document.createElement('div');
+    emp.style.cssText='text-align:center;padding:40px 20px;color:#C0B090;font-size:13px;line-height:1.8';
+    emp.innerHTML='Sin actividad aún.<br>Los gastos que agregues van a aparecer acá.';
+    el.appendChild(emp);
+    return;
+  }
+  var lastGroup=null;
+  gastos.forEach(function(g){
+    var grupoLabel=fmtFechaGrupo(g.fecha);
+    if(grupoLabel!==lastGroup){
+      var h=document.createElement('div');
+      h.style.cssText='font-size:10px;color:#B8A888;text-transform:uppercase;letter-spacing:.7px;margin:14px 0 7px';
+      if(!lastGroup) h.style.marginTop='0';
+      h.textContent=grupoLabel;
+      el.appendChild(h);
+      lastGroup=grupoLabel;
+    }
+    var pagasteTu=(g.pagador==='Tú'||g.pagador==='Tu');
+    var texto=pagasteTu?('Agregaste '+g.desc):(g.pagador+' agregó '+g.desc);
+    var d=document.createElement('div');
+    d.className='row';
+    d.style.marginBottom='5px';
+    d.innerHTML='<div style="width:30px;height:30px;border-radius:8px;background:#FFF8E0;display:flex;align-items:center;justify-content:center;font-size:14px">'+getCatEmoji(g.cat)+'</div><div style="flex:1"><div style="font-size:12px;color:#4A403A">'+texto+'</div><div style="font-size:10px;color:#A09070">'+g.grupoN+'</div></div><div style="font-size:12px;font-weight:700;color:#A09070">$'+parseInt(g.monto).toLocaleString('es-CL')+'</div>';
+    el.appendChild(d);
+  });
 }
 function renderPerfil(){
   var u=STATE.user;
@@ -1086,6 +1128,7 @@ function nav(i){
   if(i===0) renderHome();
   if(i===1) renderGrupos();
   if(i===2) renderAmigos();
+  if(i===3) renderActividad();
 }
 function back(){
   go(['home','grupos','amigos','actividad'][curNav]);

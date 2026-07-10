@@ -474,9 +474,9 @@ body{font-family:'Sora',-apple-system,system-ui,sans-serif;color:#4A403A}
   <div class="back" onclick="nav(0)"><i class="ti ti-arrow-left" style="font-size:17px;color:#555"></i><span>Mi perfil</span></div>
   <div class="scroll" style="padding:0 16px">
     <div style="display:flex;flex-direction:column;align-items:center;padding:18px 0 22px">
-      <div class="logo" style="width:68px;height:68px;border-radius:18px;font-size:24px;margin-bottom:10px">TM</div>
-      <div style="font-size:17px;font-weight:700">Tomás Morales</div>
-      <div style="font-size:12px;color:#A09070;margin-top:3px">tomas@correo.com</div>
+      <div class="logo" id="perfil-avatar" style="width:68px;height:68px;border-radius:18px;font-size:24px;margin-bottom:10px">TM</div>
+      <div style="font-size:17px;font-weight:700" id="perfil-nombre">Tomás Morales</div>
+      <div style="font-size:12px;color:#A09070;margin-top:3px" id="perfil-email">tomas@correo.com</div>
     </div>
     <div class="sec" style="margin-top:0">Datos de tu cuenta</div>
     <div class="card" style="padding:18px;margin-bottom:14px">
@@ -487,13 +487,9 @@ body{font-family:'Sora',-apple-system,system-ui,sans-serif;color:#4A403A}
         <div style="height:0.5px;background:#DDD5C5"></div>
         <div style="display:flex;align-items:center;gap:8px"><span style="font-size:12px;font-weight:700;min-width:82px">Banco:</span><span style="flex:1;font-size:12px;color:#aaa" id="val-banco">Banco Itaú</span><button onclick="copyVal('val-banco','btn-banco')" id="btn-banco" style="background:none;border:none;cursor:pointer;padding:3px;color:#A09070;font-family:inherit"><i class="ti ti-copy" style="font-size:14px"></i></button></div>
         <div style="height:0.5px;background:#DDD5C5"></div>
-        <div style="display:flex;align-items:center;gap:8px"><span style="font-size:12px;font-weight:700;min-width:82px">Tipo:</span><span style="flex:1;font-size:12px;color:#aaa" id="val-tipo">Cuenta corriente</span><button onclick="copyVal('val-tipo','btn-tipo')" id="btn-tipo" style="background:none;border:none;cursor:pointer;padding:3px;color:#A09070;font-family:inherit"><i class="ti ti-copy" style="font-size:14px"></i></button></div>
-        <div style="height:0.5px;background:#DDD5C5"></div>
         <div style="display:flex;align-items:center;gap:8px"><span style="font-size:12px;font-weight:700;min-width:82px">N° cuenta:</span><span style="flex:1;font-size:14px;font-weight:700;font-family:monospace;letter-spacing:.5px" id="val-cuenta">00123456789</span><button onclick="copyVal('val-cuenta','btn-cuenta')" id="btn-cuenta" style="background:none;border:1px solid rgba(244,169,0,.3);cursor:pointer;padding:5px 10px;border-radius:7px;color:#F4A900;font-size:11px;font-family:inherit;display:flex;align-items:center;gap:4px;white-space:nowrap"><i class="ti ti-copy" style="font-size:13px"></i>Copiar</button></div>
         <div style="height:0.5px;background:#DDD5C5"></div>
         <div style="display:flex;align-items:center;gap:8px"><span style="font-size:12px;font-weight:700;min-width:82px">Correo:</span><span style="flex:1;font-size:11px;color:#aaa" id="val-correo">tomas.morales@gmail.com</span><button onclick="copyVal('val-correo','btn-correo')" id="btn-correo" style="background:none;border:none;cursor:pointer;padding:3px;color:#A09070;font-family:inherit"><i class="ti ti-copy" style="font-size:14px"></i></button></div>
-        <div style="height:0.5px;background:#DDD5C5"></div>
-        <div style="display:flex;align-items:center;gap:8px"><span style="font-size:12px;font-weight:700;color:#2D6E8B;min-width:82px">MP alias:</span><span style="flex:1;font-size:12px;color:#2D6E8B" id="val-mp">@tomas.m</span><button onclick="copyVal('val-mp','btn-mp')" id="btn-mp" style="background:none;border:none;cursor:pointer;padding:3px;color:#A09070;font-family:inherit"><i class="ti ti-copy" style="font-size:14px"></i></button></div>
       </div>
     </div>
     <div class="sec">Respaldo</div>
@@ -908,10 +904,16 @@ function obCrearCuenta(){
   var rut=($('ob-rut')||{}).value||'';
   var banco=($('ob-banco')||{}).value||'';
   var cuenta=($('ob-cuenta')||{}).value||'';
+  document.querySelectorAll('.ob-fi').forEach(function(f){f.style.borderColor='';});
   if(!nombre.trim()){var f=$('ob-nombre');if(f){f.style.borderColor='#C1666B';f.focus();}return;}
+  if(!rut.trim()){var fr=$('ob-rut');if(fr){fr.style.borderColor='#C1666B';fr.focus();}return;}
+  if(!banco){var fb=$('ob-banco');if(fb){fb.style.borderColor='#C1666B';fb.focus();}return;}
+  if(!cuenta.trim()){var fc=$('ob-cuenta');if(fc){fc.style.borderColor='#C1666B';fc.focus();}return;}
   if(!email.trim()||email.indexOf('@')===-1){var f2=$('ob-email');if(f2){f2.style.borderColor='#C1666B';f2.focus();}return;}
-  STATE.user={nombre:nombre,email:email,rut:rut,banco:banco,cuenta:cuenta,color:obColor,ini:getInitials(nombre)};
+  var slug=(nombre.trim().toLowerCase().normalize('NFD').replace(new RegExp('[̀-ͯ]','g'),'').replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'')||'usuario')+'-'+Math.floor(1000+Math.random()*9000);
+  STATE.user={nombre:nombre,email:email,rut:rut,banco:banco,cuenta:cuenta,color:obColor,ini:getInitials(nombre),slug:slug};
   saveState();
+  renderPerfil();
   obTab(1);
   obSlide=0;
   howRender();
@@ -955,6 +957,24 @@ function renderAll(){
   renderHome();
   renderGrupos();
   renderAmigos();
+  renderPerfil();
+}
+function renderPerfil(){
+  var u=STATE.user;
+  var homeAv=$('home-avatar'), homeUn=$('home-username');
+  if(!u){
+    if(homeAv) homeAv.textContent='';
+    if(homeUn) homeUn.textContent='';
+    return;
+  }
+  if(homeAv){ homeAv.textContent=u.ini||''; homeAv.style.background=u.color||'#F4A900'; }
+  if(homeUn) homeUn.textContent=(u.nombre||'')+' 👋';
+  var pAv=$('perfil-avatar'), pNom=$('perfil-nombre'), pEm=$('perfil-email');
+  if(pAv){ pAv.textContent=u.ini||''; pAv.style.background=u.color||'#F4A900'; }
+  if(pNom) pNom.textContent=u.nombre||'';
+  if(pEm) pEm.textContent=u.email||'';
+  var vals={'val-nombre':(u.nombre||'').toUpperCase(),'val-rut':u.rut||'—','val-banco':u.banco||'—','val-cuenta':u.cuenta||'—','val-correo':u.email||'—'};
+  Object.keys(vals).forEach(function(id){ var el=$(id); if(el) el.textContent=vals[id]; });
 }
 function loadDemoData(){
   STATE.user={nombre:'Tomás Morales',email:'tomas.morales@gmail.com',rut:'12.345.678-9',banco:'Banco Itaú',cuenta:'00123456789',color:'#F4A900',ini:'TM'};
@@ -1054,6 +1074,7 @@ function go(name){
   const bot=$('bot');
   if(bot) bot.style.display=MODAL_PG.includes(name)?'none':'block';
   if(name==='gasto1') renderGasto1Grupos();
+  if(name==='perfil') renderPerfil();
 }
 function nav(i){
   curNav=i;
@@ -1815,26 +1836,31 @@ function importarDatosArchivo(e){
   reader.readAsText(file);
 }
 function shareAll(){
-  var ids=['val-nombre','val-rut','val-banco','val-tipo','val-cuenta','val-correo','val-mp'];
-  var labels=['Nombre','RUT','Banco','Tipo','N cuenta','Correo','MP alias'];
+  var ids=['val-nombre','val-rut','val-banco','val-cuenta','val-correo'];
+  var labels=['Nombre','RUT','Banco','N cuenta','Correo'];
   var lines=[];for(var i=0;i<ids.length;i++){lines.push(labels[i]+': '+($(ids[i])?$(ids[i]).textContent:''));}
   var d=lines.join('\n');
   if(navigator.share){navigator.share({title:'iOwe',text:d});}
   else{navigator.clipboard.writeText(d).catch(function(){});}
 }
-const INVITE_URL='iowe.app/join/tomas-m-2024';
-const INVITE_MSG='Te invito a iOwe para dividir gastos: https://'+INVITE_URL;
+function getInviteUrl(){
+  var slug=(STATE.user&&STATE.user.slug)?STATE.user.slug:'nuevo';
+  return 'iowe.app/join/'+slug;
+}
+function getInviteMsg(){
+  return 'Te invito a iOwe para dividir gastos: https://'+getInviteUrl();
+}
 function copyLink(){
-  navigator.clipboard.writeText('https://'+INVITE_URL).catch(()=>{});
+  navigator.clipboard.writeText('https://'+getInviteUrl()).catch(()=>{});
   const btn=$('btn-copy-link'); if(!btn) return;
   const orig=btn.textContent;
   btn.textContent='Copiado!';btn.style.background='#4A7A30';btn.style.color='#fff';
   setTimeout(()=>{btn.textContent=orig;btn.style.background='#F4A900';btn.style.color='#4A403A';},2000);
 }
-function shareWA(){window.open('https://wa.me/?text='+encodeURIComponent(INVITE_MSG),'_blank');}
-function shareSMS(){window.location.href='sms:?body='+encodeURIComponent(INVITE_MSG);}
+function shareWA(){window.open('https://wa.me/?text='+encodeURIComponent(getInviteMsg()),'_blank');}
+function shareSMS(){window.location.href='sms:?body='+encodeURIComponent(getInviteMsg());}
 function shareGeneral(){
-  if(navigator.share) navigator.share({title:'Unete a iOwe',text:INVITE_MSG,url:'https://'+INVITE_URL});
+  if(navigator.share) navigator.share({title:'Unete a iOwe',text:getInviteMsg(),url:'https://'+getInviteUrl()});
   else copyLink();
 }
 function obtenerOCrearAmigoPendiente(nombre,email){
@@ -1887,7 +1913,7 @@ function sendEmail(){
   const nombre=nombreEl?nombreEl.value.trim():'';
   if(nombre) obtenerOCrearAmigoPendiente(nombre,v);
   const subject=encodeURIComponent('Te invitan a iOwe');
-  const body=encodeURIComponent('Hola '+(nombre||'amigo')+', '+INVITE_MSG);
+  const body=encodeURIComponent('Hola '+(nombre||'amigo')+', '+getInviteMsg());
   window.location.href='mailto:'+v+'?subject='+subject+'&body='+body;
   email.value='';
   if(nombreEl) nombreEl.value='';

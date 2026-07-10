@@ -2151,6 +2151,27 @@ initEmojis();
   // (ya trae la clase "on" por defecto en el HTML) en vez de forzar datos demo.
   renderAll();
   setTimeout(function(){ updateAvPreview(); }, 50);
+  if(!obDone){
+    // autocomplete="off" no alcanza: Safari puede rellenar estos campos con los
+    // datos guardados del propio usuario (Contactos/Keychain) por su cuenta,
+    // ignorando el atributo. Como defensa, los vaciamos a la fuerza apenas carga
+    // la pantalla de inscripción, y un par de veces más por si el autofill de
+    // Safari los llena después de forma asíncrona. Si el usuario ya está
+    // escribiendo en el campo, no lo tocamos.
+    var limpiarCamposOb=function(){
+      ['ob-nombre','ob-rut','ob-cuenta','ob-email'].forEach(function(id){
+        var el=$(id);
+        if(el && document.activeElement!==el) el.value='';
+      });
+      var banco=$('ob-banco');
+      if(banco && document.activeElement!==banco) banco.selectedIndex=0;
+      updateAvPreview();
+    };
+    limpiarCamposOb();
+    setTimeout(limpiarCamposOb, 150);
+    setTimeout(limpiarCamposOb, 500);
+    setTimeout(limpiarCamposOb, 1200);
+  }
 })();
 </script>
 <script>

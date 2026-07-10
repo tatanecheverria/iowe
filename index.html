@@ -2001,7 +2001,12 @@ function shareAll(){
 }
 function getInviteUrl(){
   var slug=(STATE.user&&STATE.user.slug)?STATE.user.slug:'nuevo';
-  return 'iowe.app/unete/'+slug;
+  // Ojo: esto tiene que ser la URL real donde vive la app (GitHub Pages).
+  // Un dominio inventado o un path que no existe como archivo real (ej.
+  // "/unete/algo") da "page not found" — GitHub Pages no tiene rutas
+  // dinámicas, solo sirve archivos. Por eso el identificador va como query
+  // param (?ref=), que sí carga la app normalmente.
+  return 'tatanecheverria.github.io/iowe/?ref='+slug;
 }
 function getInviteMsg(){
   return 'Te invito a iOwe para dividir gastos: https://'+getInviteUrl();

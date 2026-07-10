@@ -18,6 +18,21 @@
   window.addEventListener('orientationchange', function(){ setTimeout(setAppHeight, 150); });
   if(window.visualViewport){ window.visualViewport.addEventListener('resize', setAppHeight); }
   document.addEventListener('DOMContentLoaded', setAppHeight);
+  // En arranque en frío de la PWA instalada, iOS a veces reporta una altura
+  // transitoria (ligada al splash screen) antes de asentar el tamaño real,
+  // y no siempre dispara "resize" después. Re-medimos varias veces tras la
+  // carga y cada vez que la app vuelve a primer plano, por las dudas.
+  window.addEventListener('load', function(){
+    setAppHeight();
+    setTimeout(setAppHeight, 100);
+    setTimeout(setAppHeight, 300);
+    setTimeout(setAppHeight, 600);
+    setTimeout(setAppHeight, 1200);
+  });
+  window.addEventListener('pageshow', setAppHeight);
+  document.addEventListener('visibilitychange', function(){
+    if(!document.hidden) setAppHeight();
+  });
 })();
 </script>
 <meta name="mobile-web-app-capable" content="yes">

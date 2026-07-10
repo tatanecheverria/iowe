@@ -34,6 +34,29 @@
     if(!document.hidden) setAppHeight();
   });
 })();
+// Con #app en position:fixed (necesario para que no rebote en iOS), Safari
+// pierde su comportamiento nativo de subir el campo enfocado por encima del
+// teclado. Sin esto, al escribir el teclado tapa el input activo y no se ve
+// lo que se está tipeando. Lo hacemos a mano: cuando se enfoca un campo, o
+// cuando el teclado termina de aparecer (visualViewport resize), lo subimos
+// a la vista.
+(function(){
+  function esCampo(el){
+    return el && (el.tagName==='INPUT' || el.tagName==='TEXTAREA' || el.tagName==='SELECT');
+  }
+  function subirCampo(el){
+    if(!esCampo(el)) return;
+    setTimeout(function(){
+      el.scrollIntoView({block:'center', behavior:'smooth'});
+    }, 50);
+  }
+  document.addEventListener('focusin', function(e){ subirCampo(e.target); });
+  if(window.visualViewport){
+    window.visualViewport.addEventListener('resize', function(){
+      subirCampo(document.activeElement);
+    });
+  }
+})();
 </script>
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">

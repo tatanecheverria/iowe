@@ -98,7 +98,7 @@ body{font-family:'Sora',-apple-system,system-ui,sans-serif;color:#000000}
 .scroll{overflow-y:auto;flex:1;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
 .scroll::-webkit-scrollbar{display:none}
 .logo{width:44px;height:44px;border-radius:11px;background:#000000;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:900;color:#F4A900;letter-spacing:-2px;user-select:none;flex-shrink:0}
-.av{width:34px;height:34px;border-radius:50%;background:#F4A900;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#000;cursor:pointer}
+.av{width:34px;height:34px;border-radius:50%;background:#000000;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#F4A900;cursor:pointer}
 .tb{display:flex;justify-content:space-between;align-items:center;padding:10px 18px;flex-shrink:0}
 .back{display:flex;align-items:center;gap:8px;padding:10px 18px 6px;cursor:pointer;flex-shrink:0}
 .back span{font-size:15px;font-weight:600;color:#000000}
@@ -226,19 +226,19 @@ body{font-family:'Sora',-apple-system,system-ui,sans-serif;color:#000000}
       <div style="margin-bottom:20px">
         <label class="ob-label">Tu avatar</label>
         <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px;padding:14px;background:#FFF8E0;border-radius:13px;border:1px solid rgba(244,169,0,.2)">
-          <div id="ob-av-preview" style="width:56px;height:56px;border-radius:50%;background:#F4A900;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:#fff;flex-shrink:0;letter-spacing:-1px;font-family:inherit">TM</div>
+          <div id="ob-av-preview" style="width:56px;height:56px;border-radius:50%;background:#000000;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:#F4A900;flex-shrink:0;letter-spacing:-1px;font-family:inherit">TM</div>
           <div>
             <div id="ob-av-name-label" style="font-size:14px;font-weight:700;color:#000000">Tu nombre</div>
             <div style="font-size:11px;color:#A09070;margin-top:2px">Toca un color para personalizarlo</div>
           </div>
         </div>
         <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px" id="ob-color-grid">
-          <div class="ob-color on" data-color="#F4A900" onclick="selColor(this)" style="width:100%;aspect-ratio:1;border-radius:50%;background:#F4A900;cursor:pointer;border:3px solid #000000;transition:transform .15s"></div>
+          <div class="ob-color" data-color="#F4A900" onclick="selColor(this)" style="width:100%;aspect-ratio:1;border-radius:50%;background:#F4A900;cursor:pointer;border:3px solid transparent;transition:transform .15s"></div>
           <div class="ob-color" data-color="#C1666B" onclick="selColor(this)" style="width:100%;aspect-ratio:1;border-radius:50%;background:#C1666B;cursor:pointer;border:3px solid transparent;transition:transform .15s"></div>
           <div class="ob-color" data-color="#4A7A30" onclick="selColor(this)" style="width:100%;aspect-ratio:1;border-radius:50%;background:#4A7A30;cursor:pointer;border:3px solid transparent;transition:transform .15s"></div>
           <div class="ob-color" data-color="#4A90C4" onclick="selColor(this)" style="width:100%;aspect-ratio:1;border-radius:50%;background:#4A90C4;cursor:pointer;border:3px solid transparent;transition:transform .15s"></div>
           <div class="ob-color" data-color="#A78BFA" onclick="selColor(this)" style="width:100%;aspect-ratio:1;border-radius:50%;background:#A78BFA;cursor:pointer;border:3px solid transparent;transition:transform .15s"></div>
-          <div class="ob-color" data-color="#000000" onclick="selColor(this)" style="width:100%;aspect-ratio:1;border-radius:50%;background:#000000;cursor:pointer;border:3px solid transparent;transition:transform .15s"></div>
+          <div class="ob-color on" data-color="#000000" onclick="selColor(this)" style="width:100%;aspect-ratio:1;border-radius:50%;background:#000000;cursor:pointer;border:3px solid #F4A900;transition:transform .15s"></div>
           <div class="ob-color" data-color="#E8845A" onclick="selColor(this)" style="width:100%;aspect-ratio:1;border-radius:50%;background:#E8845A;cursor:pointer;border:3px solid transparent;transition:transform .15s"></div>
           <div class="ob-color" data-color="#34B89A" onclick="selColor(this)" style="width:100%;aspect-ratio:1;border-radius:50%;background:#34B89A;cursor:pointer;border:3px solid transparent;transition:transform .15s"></div>
           <div class="ob-color" data-color="#E84F8C" onclick="selColor(this)" style="width:100%;aspect-ratio:1;border-radius:50%;background:#E84F8C;cursor:pointer;border:3px solid transparent;transition:transform .15s"></div>
@@ -949,7 +949,7 @@ function abrirGrupo(id){
 }
 var obSlide=0;
 var OB_DONE_KEY='iowe_ob_done';
-var obColor='#F4A900';
+var obColor='#000000';
 function obTab(i){
   document.querySelectorAll('.ob-tab').forEach(function(t,idx){t.classList.toggle('on',idx===i);});
   document.querySelectorAll('.ob-panel').forEach(function(p,idx){p.classList.toggle('on',idx===i);});
@@ -958,6 +958,17 @@ function getInitials(name){
   var parts=name.trim().split(/\s+/);
   if(parts.length===1) return parts[0].slice(0,2).toUpperCase();
   return (parts[0][0]+(parts[parts.length-1][0])).toUpperCase();
+}
+function avTextColor(hex){
+  hex=(hex||'').replace('#','');
+  if(hex.length!==6) return '#F4A900';
+  var r=parseInt(hex.slice(0,2),16),g=parseInt(hex.slice(2,4),16),b=parseInt(hex.slice(4,6),16);
+  var lum=(0.299*r+0.587*g+0.114*b)/255;
+  if(lum>0.55) return '#000000';
+  // Fondos oscuros: si el color elegido es prácticamente negro, el texto
+  // queda en mostaza (nuestro acento) en vez de blanco liso, para mantener
+  // la identidad de marca en el propio avatar del usuario.
+  return lum<0.14?'#F4A900':'#fff';
 }
 function updateAvPreview(){
   var nameEl=$('ob-nombre');
@@ -968,15 +979,12 @@ function updateAvPreview(){
   var initials=name.trim()?getInitials(name):'TM';
   preview.textContent=initials;
   preview.style.background=obColor;
-  var hex=obColor.replace('#','');
-  var r=parseInt(hex.slice(0,2),16),g=parseInt(hex.slice(2,4),16),b=parseInt(hex.slice(4,6),16);
-  var lum=(0.299*r+0.587*g+0.114*b)/255;
-  preview.style.color=lum>0.55?'#000000':'#fff';
+  preview.style.color=avTextColor(obColor);
   if(nameLabel) nameLabel.textContent=name.trim()||'Tu nombre';
 }
 function selColor(el){
   document.querySelectorAll('.ob-color').forEach(function(c){c.style.border='3px solid transparent';c.style.transform='';});
-  el.style.border='3px solid #000000';
+  el.style.border='3px solid #F4A900';
   el.style.transform='scale(1.15)';
   obColor=el.dataset.color;
   updateAvPreview();
@@ -1098,10 +1106,10 @@ function renderPerfil(){
     if(homeUn) homeUn.textContent='';
     return;
   }
-  if(homeAv){ homeAv.textContent=u.ini||''; homeAv.style.background=u.color||'#F4A900'; }
+  if(homeAv){ homeAv.textContent=u.ini||''; var hc=u.color||'#000000'; homeAv.style.background=hc; homeAv.style.color=avTextColor(hc); }
   if(homeUn) homeUn.textContent=(u.nombre||'')+' 👋';
   var pAv=$('perfil-avatar'), pNom=$('perfil-nombre'), pEm=$('perfil-email');
-  if(pAv){ pAv.textContent=u.ini||''; pAv.style.background=u.color||'#F4A900'; }
+  if(pAv){ pAv.textContent=u.ini||''; var pc=u.color||'#000000'; pAv.style.background=pc; pAv.style.color=avTextColor(pc); }
   if(pNom) pNom.textContent=u.nombre||'';
   if(pEm) pEm.textContent=u.email||'';
   var vals={'val-nombre':(u.nombre||'').toUpperCase(),'val-rut':u.rut||'—','val-banco':u.banco||'—','val-cuenta':u.cuenta||'—','val-correo':u.email||'—'};
